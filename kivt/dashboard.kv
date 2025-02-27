@@ -1,0 +1,150 @@
+#:kivy 2.1.0
+<LoadingScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+        AsyncImage:
+            source: 'assets/FiatLoading.png'
+            allow_stretch: True
+            keep_ratio: True
+
+<DashboardScreen>:
+    FloatLayout:
+        Image: 
+            source: 'assets/logo.png'
+            allow_stretch: True
+            keep_ratio: True
+            size_hint: 1, 1
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        GridLayout:
+            cols: 2
+            spacing: 15
+            size_hint: 1, 0.8
+
+            Label:
+                id: rpm_label
+                text: "RPM: 0"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: root.bg_color_rpm  # Use the dynamic background color
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                        
+            Label:
+                id: speed_label
+                text: "KM/H: 0"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5 # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Label:
+                id: temp_engine_label
+                text: "T. Engine: 0 °C"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: root.bg_color_temp_engine  # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                    
+            Label:
+                id: air_temp_label
+                text: "T. Air: 0 °C"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5 # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+        Button:
+            text: "Next Page"
+            size_hint: 1, 0.15
+            on_press: root.go_to_info()
+
+<DashboardScreenInfo>:
+    FloatLayout:
+        Image: 
+            source: 'assets/logo.png'
+            allow_stretch: True
+            keep_ratio: True
+            size_hint: 1, 1
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        GridLayout:
+            cols: 2
+            spacing: 10
+            size_hint: 1, 0.8
+
+            Label:
+                id: oil_temp_label
+                text: "T Oil: 0%"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5 # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+            Label:
+                id: fuel_rate_label
+                text: "Fuel Rate: 0 L/h"
+                font_size: 25
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5  # Cor de fundo
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+            Label:
+                id: throttle_load_label
+                text: "TPS: 0%"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5 # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+            Label:
+                id: fuel_label
+                text: "Gas: 0%"
+                font_size: 25
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.5 # Cor branca
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size            
+
+        Button:
+            text: "Next Page"
+            size_hint: 1, 0.15
+            on_press: root.go_to_dashboard()
