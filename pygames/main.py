@@ -1,3 +1,4 @@
+import obd
 import pygame
 import random
 from dashboard import loading_screen, dashboard_screen,  display_no_connection_message
@@ -14,16 +15,24 @@ pygame.display.set_caption('Dashboard do Carro')
 # Cores definidas
 BLACK = (0, 0, 0)
 
-# Função para simular dados OBD2
-def get_obd_data_simulation():
-    simulated_rpm = random.randint(0, 6000)  # RPM ajustado ao limite da barra
-    simulated_speed = random.randint(0, 200)  # Limite aumentado para 200 km/h
-    simulated_temp = random.randint(0, 120)  # Ajuste para temperatura do motor
-    simulated_lambda = random.uniform(0.85, 1.25)  # Valores mais precisos
-    simulated_intake_air_temp = random.randint(20, 50)  # Temperatura do ar de entrada
-    simulated_throttle_position = random.uniform(0, 100)  # Posição do acelerador
-    return simulated_rpm, simulated_speed, simulated_temp, simulated_lambda, simulated_intake_air_temp, simulated_throttle_position
+# Conectar ao OBD2
+connection = obd.OBD("/dev/rfcomm0")
 
+# Comando para obter a velocidade do carro
+cmd = obd.commands.SPEED
+response = connection.query(cmd)
+
+print("Velocidade:", response.value)  # Deve exibir a velocidade em km/h
+
+def get_obd_data():
+    rpm = connection.query(obd.commands.RPM).value.magnitude if connection.supports(obd.commands.RPM) else 0
+    speed = connection.query(obd.commands.SPEED).value.magnitude if connection.supports(obd.commands.SPEED) else 0
+    temp = connection.query(obd.commands.COOLANT_TEMP).value.magnitude if connection.supports(obd.commands.COOLANT_TEMP) else 0
+    intake_air_temp = connection.query(obd.commands.INTAKE_TEMP).value.magnitude if connection.supports(obd.commands.INTAKE_TEMP) else 0
+    throttle_position = connection.query(obd.commands.THROTTLE_POS).value.magnitude if connection.supports(obd.commands.THROTTLE_POS) else 0
+    lambda_value = 1  # Lambda não é um dado padrão, então pode precisar de um cálculo específico
+    
+    return rpm, speed, temp, lambda_value, intake_air_temp, throttle_position
 
 # Loop principal
 running = True
